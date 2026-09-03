@@ -1,0 +1,113 @@
+@import 'tailwindcss';
+
+/*
+  Designtokens.
+
+  Leitidee: Das ist ein Betriebswerkzeug, kein Marketing-Produkt. Farbe wird
+  fast ausschliesslich fuer Zustand verwendet (Kampagnenstatus, Warnungen),
+  nicht zur Dekoration. Die Flaeche bleibt kuehl und ruhig, damit ein
+  laufender Versand optisch heraussticht.
+*/
+@theme {
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #eef0f4;
+  --color-ink: #1a1d26;
+  --color-muted: #5c6373;
+  --color-line: #e1e4ea;
+
+  /* Primaeraktion */
+  --color-brand: #3a46b8;
+  --color-brand-ink: #2a3490;
+  --color-brand-wash: #eceefb;
+
+  /* Zustandsfarben - jede steht fuer genau einen Kampagnenstatus */
+  --color-state-draft: #6b7280;
+  --color-state-review: #a35a07;
+  --color-state-running: #3a46b8;
+  --color-state-paused: #a35a07;
+  --color-state-stopped: #b42318;
+  --color-state-done: #0d7050;
+
+  --color-danger: #b42318;
+  --color-danger-wash: #fdeceb;
+  --color-warn-wash: #fdf3e6;
+  --color-ok-wash: #e8f5f0;
+
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --radius-card: 6px;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+  }
+
+  body {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* FE-09: Fokus muss immer sichtbar sein, auch auf farbigen Flaechen. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  [data-invalid='true'] {
+    border-color: var(--color-danger);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Sprungmarke fuer Tastatur- und Screenreader-Nutzung (WCAG 2.4.1). */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-surface);
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-line);
+  }
+  .skip-link:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+  }
+
+  /* Pulspunkt am laufenden Versand. Einzige nicht ausgeloeste Bewegung
+     in der App - sie zeigt an, dass gerade echte Mails rausgehen. */
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: currentColor;
+    animation: live-pulse 2s ease-in-out infinite;
+  }
+  @keyframes live-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+}
